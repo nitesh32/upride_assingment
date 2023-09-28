@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/upride_assingment/static/css/main.8a10da13.css",
-    "main.js": "/upride_assingment/static/js/main.6a9fe7ae.js",
+    "main.css": "/upride_assingment/static/css/main.a37409eb.css",
+    "main.js": "/upride_assingment/static/js/main.032924ee.js",
     "static/js/787.ac6cb7f5.chunk.js": "/upride_assingment/static/js/787.ac6cb7f5.chunk.js",
     "static/media/profile.png": "/upride_assingment/static/media/profile.09095687c5ed7cf0b603.png",
     "index.html": "/upride_assingment/index.html",
-    "main.8a10da13.css.map": "/upride_assingment/static/css/main.8a10da13.css.map",
-    "main.6a9fe7ae.js.map": "/upride_assingment/static/js/main.6a9fe7ae.js.map",
+    "main.a37409eb.css.map": "/upride_assingment/static/css/main.a37409eb.css.map",
+    "main.032924ee.js.map": "/upride_assingment/static/js/main.032924ee.js.map",
     "787.ac6cb7f5.chunk.js.map": "/upride_assingment/static/js/787.ac6cb7f5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8a10da13.css",
-    "static/js/main.6a9fe7ae.js"
+    "static/css/main.a37409eb.css",
+    "static/js/main.032924ee.js"
   ]
 }
