@@ -3,14 +3,20 @@ import imgview from "./assets/images/imgview.png";
 import profile from "./assets/images/profile.png";
 
 export const Booking = () => {
-  var data_off = {};
-  var data_on = {};
-  var active = [];
-  var completed = [];
-  var cancelled = [];
-  const [initial, setCount] = useState(active);
-  const apiUrl = "https://upride-internships-default-rtdb.firebaseio.com/.json";
+  var data_off = {};   //storing offline bookings data
+  var data_on = {};    //storing online bookings data
+  var active = [];     //storing active bookings data
+  var completed = [];  //storing completed bookings data
+  var cancelled = [];  //storing cancelled bookings data
 
+  const [initial, setCount] = useState(active);
+  const [num,setNum]=useState(1);
+  const [start,setStart] =useState(0);
+  const [end,setEnd] =useState(10);
+  
+
+  const apiUrl = "https://upride-internships-default-rtdb.firebaseio.com/.json";
+// fetching data from given url
   fetch(apiUrl)
     .then((response) => {
       if (!response.ok) {
@@ -41,7 +47,7 @@ export const Booking = () => {
           active.push(newobj);
         }
         if (data_off[key].bookingStatus === "COMPLETED") {
-          var newobj = {};
+          newobj = {};
           newobj.id = data_off[key].bookingID;
           newobj.user_name = data_off[key].clientName;
           newobj.time_date = data_off[key].bookingEpochTime;
@@ -58,7 +64,7 @@ export const Booking = () => {
           completed.push(newobj);
         }
         if (data_off[key].bookingStatus === "CANCELLED") {
-          var newobj = {};
+          newobj = {};
           newobj.id = data_off[key].bookingID;
           newobj.user_name = data_off[key].clientName;
           newobj.time_date = data_off[key].bookingEpochTime;
@@ -78,7 +84,7 @@ export const Booking = () => {
 
       for (let key in data_on) {
         if (data_on[key].bookingStatus === "SUCCESS") {
-          var newobj = {};
+          newobj = {};
           newobj.id = data_on[key].bookingID;
           newobj.user_name = data_on[key].clientName;
           newobj.time_date = data_on[key].bookingEpochTime;
@@ -95,7 +101,7 @@ export const Booking = () => {
           active.push(newobj);
         }
         if (data_on[key].bookingStatus === "COMPLETED") {
-          var newobj = {};
+           newobj = {};
           newobj.id = data_on[key].bookingID;
           newobj.user_name = data_on[key].clientName;
           newobj.time_date = data_on[key].bookingEpochTime;
@@ -112,7 +118,7 @@ export const Booking = () => {
           completed.push(newobj);
         }
         if (data_on[key].bookingStatus === "CANCELLED") {
-          var newobj = {};
+          newobj = {};
           newobj.id = data_on[key].bookingID;
           newobj.user_name = data_on[key].clientName;
           newobj.time_date = data_on[key].bookingEpochTime;
@@ -136,13 +142,22 @@ export const Booking = () => {
       console.error("Error:", error);
     });
 
+
+
+  
   const sortedObjects = [...initial].sort((a, b) =>
     a.name.localeCompare(b.name)
   );
+  var total = Math.round(sortedObjects.length/10);
   // setCount(sortedObjects);
   // {console.log(initial)}
   // {console.log(sortedObjects)}
 
+
+
+
+
+// handleclick event is for handling all button actions
   function handleclick(val) {
     const element = document.getElementById(val);
     const all_btn = document.getElementsByClassName("butt_cont");
@@ -152,16 +167,48 @@ export const Booking = () => {
     }
     document.getElementById(element.id).classList.add("active");
     if (element.id === "active_butt") {
-      console.log("active");
+      // console.log("active");
       setCount(active);
+      
     } else if (element.id === "completed_butt") {
-      console.log("completed");
+      // console.log("completed");
       setCount(completed);
     } else if (element.id === "cancelled_butt") {
-      console.log("cancelled");
+      // console.log("cancelled");
       setCount(cancelled);
     }
+    setNum(1);
+      setStart(0);
+      setEnd(10);
   }
+
+
+
+  function gotonext(){
+    // setStart(start+10);
+    if(num===total){
+      return;
+    }
+    setNum(num+1)
+    setStart(start+10);
+    setEnd(end+10);
+
+  }
+
+
+
+
+  function gotoprev(){
+    if(num===1){
+      return;
+    }
+    setNum(num-1)
+    setStart(start-10);
+    setEnd(end-10);
+  }
+
+
+  
 
   return (
     <div id="bookings">
@@ -174,6 +221,7 @@ export const Booking = () => {
           <div
             id="active_butt"
             className="butt_cont active"
+  
             onClick={() => handleclick("active_butt")}
           >
             Active
@@ -202,8 +250,7 @@ export const Booking = () => {
             <div>Payment Mode</div>
           </div>
           <div id="card_container">
-            {sortedObjects.map((value) => (
-              <>
+            {sortedObjects.slice(start, end).map((value) => (
                 <div id="card" key={value.id}>
                   <div id="name" className="card_det">
                     <img src={profile} alt="hello" />
@@ -234,8 +281,15 @@ export const Booking = () => {
                     )}
                   </div>
                 </div>
-              </>
+
+                
             ))}
+            <div id="pagination">
+            <button onClick={()=>gotoprev()}>PREV</button>
+            <h3>{num} out of {total}</h3>
+            {console.log(start,end)}
+            <button onClick={()=>gotonext()}>NEXT</button>
+            </div>
           </div>
         </div>
       </div>
