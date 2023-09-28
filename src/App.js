@@ -1,9 +1,15 @@
-
 import './App.css';
+import { Navbar } from './Navbar';
+import { Main } from './Main';
 
 function App() {
   return (
-    <h3>mghfcgjhfgbvhg</h3>
+    <>
+    <div id="main_div">
+    <Navbar/>
+    <Main/>
+    </div>
+    </>
   );
 }
 
