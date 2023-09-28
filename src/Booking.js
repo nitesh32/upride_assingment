@@ -16,7 +16,6 @@ export const Booking = () => {
   const [data,setData] =useState({});
 
   dataassign();
-  const [initial, setCount] = useState(active);
   function dataassign(){
 
     data_off = data.offline_bookings;
@@ -150,7 +149,7 @@ export const Booking = () => {
       console.error("Error:", error);
     });
     }, []);
-
+    const [initial, setCount] = useState(active);
 // sorting and assigning data according to timestamp ---------------------------------------------
   const sortedObjects = [...initial].sort((a, b) =>
     a.name.localeCompare(b.name)
@@ -159,7 +158,6 @@ export const Booking = () => {
   // setCount(sortedObjects);
   // {console.log(initial)}
   // {console.log(sortedObjects)}
-
 
 
 
@@ -175,6 +173,7 @@ export const Booking = () => {
     document.getElementById(element.id).classList.add("active");
     if (element.id === "active_butt") {
       // console.log("active");
+      
       setCount(active);
       
     } else if (element.id === "completed_butt") {
@@ -215,7 +214,7 @@ export const Booking = () => {
   return (
     
     <div id="bookings">
-
+      
       <div id="top">
         <span>View Bookings</span>
         <img src={imgview} alt="img not available" />
