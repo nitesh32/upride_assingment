@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import imgview from "./assets/images/imgview.png";
 import profile from "./assets/images/profile.png";
 
@@ -8,24 +8,18 @@ export const Booking = () => {
   var active = [];     //storing active bookings data
   var completed = [];  //storing completed bookings data
   var cancelled = [];  //storing cancelled bookings data
-
-  const [initial, setCount] = useState(active);
+  
+  
   const [num,setNum]=useState(1);
   const [start,setStart] =useState(0);
   const [end,setEnd] =useState(10);
-  
+  const [data,setData] =useState({});
 
-  const apiUrl = "https://upride-internships-default-rtdb.firebaseio.com/.json";
-// fetching data from given url
-  fetch(apiUrl)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      data_off = data.offline_bookings;
+  dataassign();
+  const [initial, setCount] = useState(active);
+  function dataassign(){
+
+    data_off = data.offline_bookings;
       data_on = data.online_bookings;
 
       for (let key in data_off) {
@@ -135,16 +129,29 @@ export const Booking = () => {
           cancelled.push(newobj);
         }
       }
+  }
+// fetching data from given url --------------------------------------------------------------
+  useEffect(() => {
+  const apiUrl = "https://upride-internships-default-rtdb.firebaseio.com/.json";
+  fetch(apiUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      setData(data);
+      
       // console.log(Object.keys(data_on).length);
       // console.log(Object.keys(data_off).length);
     })
     .catch((error) => {
       console.error("Error:", error);
     });
+    }, []);
 
-
-
-  
+// sorting and assigning data according to timestamp ---------------------------------------------
   const sortedObjects = [...initial].sort((a, b) =>
     a.name.localeCompare(b.name)
   );
@@ -157,7 +164,7 @@ export const Booking = () => {
 
 
 
-// handleclick event is for handling all button actions
+// handleclick event is for handling all button actions ------------------------------------
   function handleclick(val) {
     const element = document.getElementById(val);
     const all_btn = document.getElementsByClassName("butt_cont");
@@ -183,7 +190,7 @@ export const Booking = () => {
   }
 
 
-
+// pagination next button event -----------------------------------------------------
   function gotonext(){
     // setStart(start+10);
     if(num===total){
@@ -195,9 +202,7 @@ export const Booking = () => {
 
   }
 
-
-
-
+// pagination previous button event -----------------------------------------------------
   function gotoprev(){
     if(num===1){
       return;
@@ -206,12 +211,11 @@ export const Booking = () => {
     setStart(start-10);
     setEnd(end-10);
   }
-
-
   
-
   return (
+    
     <div id="bookings">
+
       <div id="top">
         <span>View Bookings</span>
         <img src={imgview} alt="img not available" />
@@ -221,11 +225,11 @@ export const Booking = () => {
           <div
             id="active_butt"
             className="butt_cont active"
-  
             onClick={() => handleclick("active_butt")}
           >
             Active
           </div>
+
           <div
             id="completed_butt"
             className="butt_cont"
@@ -287,7 +291,6 @@ export const Booking = () => {
             <div id="pagination">
             <button onClick={()=>gotoprev()}>PREV</button>
             <h3>{num} out of {total}</h3>
-            {console.log(start,end)}
             <button onClick={()=>gotonext()}>NEXT</button>
             </div>
           </div>
